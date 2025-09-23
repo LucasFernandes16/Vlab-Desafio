@@ -7,6 +7,7 @@ export interface Movie {
   vote_average: number;
   genre_ids: number[]; // adicionando o id
   popularity: number;
+  runtime: number; // duração em minutos
 }
 
 export interface MovieResponse {

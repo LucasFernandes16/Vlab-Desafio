@@ -110,6 +110,11 @@ p {
   }
 }
 
+.nav-options {
+  display: flex;
+  gap: 1rem;
+}
+
 .app-main {
   flex: 1;
   display: flex;

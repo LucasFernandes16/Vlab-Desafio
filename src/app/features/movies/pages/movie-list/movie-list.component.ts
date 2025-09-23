@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+  import { Component, OnInit, inject } from '@angular/core';
 import { MovieFacade } from '../../services/movie.facade';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { MovieCardComponent } from '../../components/movie-card/movie-card.component';

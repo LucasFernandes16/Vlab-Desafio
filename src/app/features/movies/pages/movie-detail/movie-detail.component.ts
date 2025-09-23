@@ -1,10 +1,12 @@
-import { Component, OnInit, inject} from '@angular/core';
+// src/app/pages/movie-detail/movie-detail.component.ts
+import { Component, OnInit, inject } from '@angular/core';
 import { MovieFacade } from '../../services/movie.facade';
 import { CommonModule, AsyncPipe } from '@angular/common';
 import { CarouselComponent } from '@shared/components/carousel/carousel.component';
 import { ActivatedRoute } from '@angular/router';
-import { Movie } from '../../types/movie.type';
-import { Genre } from '../../types/movie.type';
+import { Movie, Genre } from '../../types/movie.type';
+import { MarathonService, Marathon } from '../../services/marathon.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-movie-detail',
@@ -14,21 +16,24 @@ import { Genre } from '../../types/movie.type';
   imports: [
     CommonModule,
     AsyncPipe,
-    CarouselComponent
+    CarouselComponent,
+    FormsModule // necessário para usar [(ngModel)]
   ]
-
 })
-
 export class MovieDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);
   facade = inject(MovieFacade);
+  private marathonService = inject(MarathonService);
+
+  marathons: Marathon[] = [];
+  showMarathonMenu = false;
+  newMarathonName = '';
 
   movie: Movie | null = null;
   loading = true;
   error: string | null = null;
 
   ngOnInit() {
-
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.facade.getMovieDetails(+id).subscribe({
@@ -45,6 +50,7 @@ export class MovieDetailComponent implements OnInit {
       this.error = 'ID do filme não encontrado';
       this.loading = false;
     }
+    this.loadMarathons();
   }
 
   getGenreName(genreId: number): string {
@@ -75,8 +81,38 @@ export class MovieDetailComponent implements OnInit {
   }
 
   getPosterUrl(path: string): string {
-  return path
-    ? `https://image.tmdb.org/t/p/w500${path}`
-    : 'assets/no-poster.png'; // 👈 fallback se não tiver imagem
-}
+    return path
+      ? `https://image.tmdb.org/t/p/w500${path}`
+      : 'assets/no-poster.png'; // fallback se não tiver imagem
+  }
+
+  loadMarathons() {
+    this.marathons = this.marathonService.getMarathons();
+  }
+
+  toggleMarathonMenu() {
+    this.showMarathonMenu = !this.showMarathonMenu;
+  }
+
+  addToMarathon(marathonId: number) {
+    if (this.movie) {
+      this.marathonService.addMovieToMarathon(marathonId, this.movie.id, this.movie.runtime);
+      this.loadMarathons();
+      this.showMarathonMenu = false;
+    }
+  }
+
+  createMarathon() {
+    if (this.newMarathonName.trim() && this.movie) {
+      const marathon = this.marathonService.createMarathon(this.newMarathonName);
+      this.marathonService.addMovieToMarathon(marathon.id, this.movie.id, this.movie.runtime);
+      this.newMarathonName = '';
+      this.loadMarathons();
+      this.showMarathonMenu = false;
+    }
+  }
+
+  getTotalDuration(marathonId: number): number {
+    return this.marathonService.getTotalDuration(marathonId);
+  }
 }

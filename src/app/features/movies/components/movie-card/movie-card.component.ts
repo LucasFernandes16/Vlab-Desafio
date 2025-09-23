@@ -15,6 +15,12 @@ export class MovieCardComponent {
   @Input() id!: number;
   @Input() title!: string;
   @Input() imgSrc!: string;
+  @Input() overview!: string;
+  @Input() releaseDate!: string
+  @Input() voteAverage!: number;
+  @Input() genreIds!: number[];
+  @Input() popularity!: number
+  @Input() runtime!: number; // duração em minutos
 
 
   getPosterUrl(posterPath: string): string {

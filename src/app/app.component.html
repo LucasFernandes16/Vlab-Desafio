@@ -1,9 +1,14 @@
 <div class="app-container">
   <header class="app-header">
     <h1 class="app-title">{{ title }}</h1>
-    <nav class="app-nav">
-      <a routerLink="/movies" routerLinkActive="active" class="nav-link">Movies</a>
-    </nav>
+    <div class="nav-options">
+      <nav class="app-nav">
+        <a routerLink="/movies" routerLinkActive="active" class="nav-link">Movies</a>
+      </nav>
+      <nav class = "app-nav">
+        <a routerLink="/mymarathons" routerLinkActive="active" class="nav-link">My Marathon</a>
+      </nav>
+    </div>
   </header>
 
   <main class="app-main">

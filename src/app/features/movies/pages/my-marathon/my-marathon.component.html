@@ -1,0 +1,27 @@
+<div class="container">
+  <h2>🎬 My Marathons</h2>
+
+  <!-- Criar nova maratona -->
+  <input [(ngModel)]="newMarathonName" placeholder="Nome da maratona" />
+  <button (click)="createMarathon()">Criar</button>
+
+  <!-- Listar maratonas -->
+  <div *ngFor="let marathon of marathons" class="marathon-card">
+    <h3>{{ marathon.name }}</h3>
+    <button (click)="deleteMarathon(marathon.id)">Excluir</button>
+
+    <div class="movie-grid">
+      <ng-container *ngFor="let movieId of marathon.movies">
+        <ng-container *ngIf="getMovieDetails(movieId.id) | async as movie">
+          <app-movie-card
+            [id]="movie.id"
+            [title]="movie.title"
+            [imgSrc]="movie.poster_path"
+            [voteAverage]="movie.vote_average"
+            [runtime]="movie.runtime">
+          </app-movie-card>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+</div>
