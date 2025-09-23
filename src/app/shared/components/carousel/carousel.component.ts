@@ -1,5 +1,6 @@
-import { Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, AfterViewInit } from '@angular/core'; // esqueci de importar AfterViewInit
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 export interface CarouselItem {
   id: number;
@@ -10,6 +11,9 @@ export interface CarouselItem {
   rating?: number;
   vote?: number;
   character?: string;
+  genre_ids?: number[];
+  release_date?: string;
+  popularity?: number;
 }
 
 @Component({

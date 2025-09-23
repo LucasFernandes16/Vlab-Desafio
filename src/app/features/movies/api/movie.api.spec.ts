@@ -6,7 +6,6 @@ import { MovieResponse } from '../types/movie.type';
 describe('MovieApiService', () => {
   let service: MovieApiService;
   let httpMock: HttpTestingController;
-
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
@@ -54,8 +53,11 @@ describe('MovieApiService', () => {
       expect(response).toEqual(dummyResponse);
     });
 
+    
     const req = httpMock.expectOne(req => req.url.includes('/search/movie') && req.url.includes(`query=${query}`));
     expect(req.request.method).toBe('GET');
     req.flush(dummyResponse);
   });
+
+  
 });

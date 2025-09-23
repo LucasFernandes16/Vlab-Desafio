@@ -1,7 +1,36 @@
+<div class="filter-bar">
+  <div class="filter-group filter-group--filters">
+    <input [formControl]="searchControl" placeholder="Buscar por nome..." class="filter-input" />
+    <select [(ngModel)]="selectedGenre" class="filter-select">
+      <option value="">Todos os gêneros</option>
+      @for (genre of genres; track genre.id) {
+        <option [value]="genre.id">{{ genre.name }}</option>
+      }
+    </select>
+    <select [(ngModel)]="selectedYear" class="filter-select">
+      <option value="">Ano</option>
+      @for (year of years; track year) {
+        <option [value]="year">{{ year }}</option>
+      }
+    </select>
+  </div>
+  <div class="filter-group filter-group--order">
+    <select [(ngModel)]="selectedOrder" class="filter-select">
+      <option value="release_date">Ano de lançamento</option>
+      <option value="vote">Nota</option>
+      <option value="title">Nome</option>
+      <option value="popularity">Popularidade</option>
+    </select>
+  </div>
+</div>
+
 <div class="movie-list-container">
+  <div *ngIf="loading" class="loading-spinner">Carregando...</div>
+  <div *ngIf="error" class="error-message">{{ error }}</div>
+
   <app-carousel
-    [titles]="'Popular Movies'"
-    [items]="popularMovies"
+    [title]="'Popular Movies'"
+    [items]="filteredAndSortedMovies"
     [isExplore]="false"
     [exploreLink]="'/movies/popular'"
     [canNavigateLeft]="true"
@@ -9,7 +38,7 @@
   </app-carousel>
 
   <app-carousel
-    [titles]="'Top Rated Movies'"
+    [title]="'Top Rated Movies'"
     [items]="topRatedMovies"
     [isExplore]="false"
     [exploreLink]="'/movies/top-rated'"
@@ -18,7 +47,7 @@
   </app-carousel>
 
   <app-carousel
-    [titles]="'Upcoming Movies'"
+    [title]="'Upcoming Movies'"
     [items]="upcomingMovies"
     [isExplore]="false"
     [exploreLink]="'/movies/upcoming'"
@@ -26,3 +55,5 @@
     [canNavigateRight]="true">
   </app-carousel>
 </div>
+
+

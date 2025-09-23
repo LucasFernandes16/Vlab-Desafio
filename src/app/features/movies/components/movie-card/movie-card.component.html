@@ -1,5 +1,5 @@
 @if (movie) {
-  <div class="movie-card">
+  <a [routerLink]="['id']" class="movie-card">
     <img [src]="getPosterUrl(movie.poster_path)" [alt]="movie.title" class="movie-poster">
     <div class="movie-info">
       <h3 class="movie-title">{{ movie.title }}</h3>
@@ -9,5 +9,5 @@
         <span class="movie-rating">Rating: {{ movie.vote_average }}</span>
       </div>
     </div>
-  </div>
+  </a>
 }

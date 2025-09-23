@@ -6,17 +6,7 @@
   width: 95vw;
 }
 
-.search-bar {
-  margin-bottom: 2rem;
 
-  input {
-    width: 100%;
-    padding: 0.8rem;
-    font-size: 1rem;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-  }
-}
 
 .movie-grid {
   display: grid;
@@ -42,3 +32,48 @@
     cursor: pointer;
   }
 }
+
+
+.filter-bar {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 2rem;
+  margin: 2rem 0 3rem 0;
+  width: 100%;
+}
+
+.filter-group {
+  display: flex;
+
+  gap: 1rem;
+  background: #222;
+  padding: 1rem 2rem;
+  border-radius: 2rem;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.2);
+
+}
+
+.filter-input, .filter-select {
+  background: #141414;
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 1.5rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.filter-input:focus, .filter-select:focus {
+  border-color: #e50914;
+}
+
+.filter-select {
+  min-width: 160px;
+}
+
+.filter-input[type="number"] {
+  width: 100px;
+}
+

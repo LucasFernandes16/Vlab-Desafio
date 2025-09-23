@@ -1,0 +1,26 @@
+<div *ngIf="movie" class="movie-detail">
+  <div class="poster">
+    <img [src]="getPosterUrl(movie.poster_path)" alt="{{ movie.title }}">
+  </div>
+
+  <div class="info">
+    <h1>{{ movie.title }}</h1>
+    <h3 *ngIf="movie.title !== movie.title">
+      ({{ movie.title }})
+    </h3>
+
+    <p><strong>Data de lançamento:</strong> {{ movie.release_date | date }}</p>
+    <p><strong>Duração:</strong> {{ movie.poster_path }} min</p>
+
+    <p><strong>Nota:</strong> ⭐ {{ movie.vote_average | number:'1.1-1' }}/10</p>
+
+    <p><strong>Gêneros:</strong>
+      <span *ngFor="let g of movie.genre_ids; let last = last">
+        {{ getGenreName.name }}<span *ngIf="!last">, </span>
+      </span>
+    </p>
+
+    <h2>Sinopse</h2>
+    <p>{{ movie.overview }}</p>
+  </div>
+</div>

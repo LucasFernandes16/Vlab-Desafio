@@ -2,13 +2,14 @@ import { Injectable, inject } from '@angular/core';
 import { MovieApiService } from '../api/movie.api';
 import { MovieStateService } from '../state/movie.state';
 import { map, tap, catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { of, Observable } from 'rxjs';
+import { Movie } from '../types/movie.type';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MovieFacade {
-  private api = inject(MovieApiService);
+  public api = inject(MovieApiService);
   private state = inject(MovieStateService);
 
   movies$ = this.state.movies$;
@@ -44,4 +45,9 @@ export class MovieFacade {
       })
     ).subscribe();
   }
+
+   getMovieDetails(movieId: number): Observable<Movie> {
+    return this.api.getMovieDetails(movieId);
+  }
+
 }
