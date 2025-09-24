@@ -10,6 +10,7 @@ export interface Marathon {
     id: number;    // só IDs, detalhes pegamos da API
     runtime: number; // duração em minutos
   }[];
+  showMenu?: boolean; // para controlar o menu de adicionar filmes
 }
 
 @Injectable({
@@ -72,5 +73,12 @@ export class MarathonService {
     const marathon = this.marathons.find(m => m.id === marathonId);
     if (!marathon) return 0;
     return marathon.movies.reduce((total, movie) => total + movie.runtime, 0);
+  }
+
+  toggleMarathon(marathonId: number): void {
+    const marathon = this.marathons.find(m => m.id === marathonId);
+    if (marathon) {
+      marathon.showMenu = !marathon.showMenu;
+    }
   }
 }

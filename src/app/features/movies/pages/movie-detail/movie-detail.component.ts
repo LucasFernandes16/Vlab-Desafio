@@ -17,7 +17,7 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     AsyncPipe,
     CarouselComponent,
-    FormsModule // necessário para usar [(ngModel)]
+    FormsModule
   ]
 })
 export class MovieDetailComponent implements OnInit {

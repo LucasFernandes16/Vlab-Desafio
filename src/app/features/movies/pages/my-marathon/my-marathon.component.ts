@@ -1,17 +1,24 @@
 // src/app/pages/my-marathons/my-marathons.component.ts
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule,AsyncPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MarathonService, Marathon } from '../../services/marathon.service';
 import { MovieFacade } from '../../services/movie.facade';
 import { MovieCardComponent } from '../../components/movie-card/movie-card.component';
+import { RouterModule } from '@angular/router'; //  
 
 @Component({
   selector: 'app-my-marathons',
   standalone: true,
   templateUrl: './my-marathon.component.html',
   styleUrls: ['./my-marathon.component.scss'],
-  imports: [CommonModule, FormsModule, MovieCardComponent]
+  imports: [
+    CommonModule,
+    AsyncPipe,
+    FormsModule,
+    MovieCardComponent,
+    RouterModule
+  ]
 })
 export class MyMarathonsComponent implements OnInit {
   private marathonService = inject(MarathonService);
@@ -19,6 +26,7 @@ export class MyMarathonsComponent implements OnInit {
 
   marathons: Marathon[] = [];
   newMarathonName = '';
+  selectedMarathonId: number | null = null;
 
   ngOnInit() {
     this.loadMarathons();
@@ -27,6 +35,7 @@ export class MyMarathonsComponent implements OnInit {
   loadMarathons() {
     this.marathons = this.marathonService.getMarathons();
   }
+
 
   createMarathon() {
     if (this.newMarathonName.trim()) {
@@ -47,5 +56,13 @@ export class MyMarathonsComponent implements OnInit {
 
   getTotalDuration(marathonId: number): number {
     return this.marathonService.getTotalDuration(marathonId);
+  }
+
+  toggleMarathonDetails(id: number) {
+    if (this.selectedMarathonId === id) {
+      this.selectedMarathonId = null; // Se já estiver selecionado, fecha a lista
+    } else {
+      this.selectedMarathonId = id; // Senão, abre a lista
+    }
   }
 }

@@ -1,25 +1,40 @@
 <div class="container">
-  <h2>🎬 My Marathons</h2>
+  <h2>🎬 Minhas Maratonas</h2>
 
-  <!-- Criar nova maratona -->
-  <input [(ngModel)]="newMarathonName" placeholder="Nome da maratona" />
-  <button (click)="createMarathon()">Criar</button>
+  <div class="create-marathon-section">
+    <input [(ngModel)]="newMarathonName" placeholder="Nome da nova maratona" class="marathon-input" />
+    <button (click)="createMarathon()" class="create-btn">Criar Maratona</button>
+  </div>
 
-  <!-- Listar maratonas -->
+  <div *ngIf="marathons.length === 0" class="no-marathons-message">
+    <p>Nenhuma maratona criada ainda.</p>
+  </div>
+
   <div *ngFor="let marathon of marathons" class="marathon-card">
-    <h3>{{ marathon.name }}</h3>
-    <button (click)="deleteMarathon(marathon.id)">Excluir</button>
+    <div class="marathon-header">
+      <h3>{{ marathon.name }}</h3>
+      <div class="marathon-actions">
+        <button (click)="toggleMarathonDetails(marathon.id)" class="action-btn">
+          {{ selectedMarathonId === marathon.id ? 'Ocultar Filmes' : 'Mostrar Filmes' }}
+        </button>
+        <button (click)="deleteMarathon(marathon.id)" class="delete-btn">Excluir</button>
+      </div>
+    </div>
 
-    <div class="movie-grid">
-      <ng-container *ngFor="let movieId of marathon.movies">
-        <ng-container *ngIf="getMovieDetails(movieId.id) | async as movie">
-          <app-movie-card
-            [id]="movie.id"
-            [title]="movie.title"
-            [imgSrc]="movie.poster_path"
-            [voteAverage]="movie.vote_average"
-            [runtime]="movie.runtime">
-          </app-movie-card>
+    <div *ngIf="selectedMarathonId === marathon.id" class="movie-grid">
+      <p *ngIf="marathon.movies.length === 0">Nenhum filme foi adicionado a esta maratona.</p>
+      
+      <ng-container *ngFor="let movieRef of marathon.movies">
+        <ng-container *ngIf="getMovieDetails(movieRef.id) | async as movie">
+          <a [routerLink]="['/movies', movie.id]" class="movie-link">
+            <app-movie-card
+              [id]="movie.id"
+              [title]="movie.title"
+              [imgSrc]="movie.poster_path"
+              [voteAverage]="movie.vote_average"
+              [runtime]="movie.runtime">
+            </app-movie-card>
+          </a>
         </ng-container>
       </ng-container>
     </div>

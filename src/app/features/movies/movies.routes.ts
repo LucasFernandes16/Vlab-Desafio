@@ -9,7 +9,7 @@ export const MOVIE_ROUTES: Routes = [
     component: MovieListComponent,
   },
   {
-    path: 'my-marathons',
+    path: 'mymarathons',
     component: MyMarathonsComponent,
   },
   {
