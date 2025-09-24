@@ -23,10 +23,10 @@
     <h2>Sinopse</h2>
     <p>{{ movie.overview }}</p>
   </div>
-</div>
-<!-- Botão de adicionar -->
-<button class="add-btn" (click)="toggleMarathonMenu()">➕ Adicionar à maratona</button>
+  <!-- Botão de adicionar -->
 
+</div>
+ <button class="add-btn" (click)="toggleMarathonMenu()">➕ Adicionar à maratona</button>
 <!-- Menu de maratonas -->
 <div *ngIf="showMarathonMenu" class="marathon-menu">
   <h3>Escolha uma maratona</h3>
@@ -40,7 +40,7 @@
 
   <h4>Criar nova maratona</h4>
   <input [(ngModel)]="newMarathonName" placeholder="Nome da maratona" />
-  <button class="create-btn" (click)="createMarathon()">Criar e adicionar</button>
+  <button class="add-btn" (click)="createMarathon()">Criar e adicionar</button>
 </div>
 
 

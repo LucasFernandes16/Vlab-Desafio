@@ -1,13 +1,19 @@
 import { Routes } from '@angular/router';
 
-
 export const routes: Routes = [
   {
     path: 'movies',
-    loadChildren: () => import('./features/movies/movies.routes').then(m => m.MOVIE_ROUTES)
+    loadChildren: () =>
+      import('./features/movies/movies.routes').then(m => m.MOVIE_ROUTES),
   },
   {
     path: '',
-    loadChildren: () => import('./features/movies/movies.routes').then(m => m.MOVIE_ROUTES)
+    redirectTo: 'movies',
+    pathMatch: 'full',
+  },
+  {
+    path: '**',
+    redirectTo: 'movies',
+    pathMatch: 'full',
   },
 ];

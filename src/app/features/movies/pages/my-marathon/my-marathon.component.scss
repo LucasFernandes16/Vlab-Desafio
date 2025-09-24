@@ -1,0 +1,58 @@
+.add-btn {
+  font-size: 14px;
+  padding: 6px 10px;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 6px;
+  border: none;
+  background: #1db954; /* verde estilo Spotify */
+  color: white;
+  transition: background 0.2s;
+}
+
+.add-btn:hover {
+  background: #159d42;
+}
+
+.marathon-menu {
+  margin-top: 10px;
+  padding: 10px;
+  background: #222;
+  border-radius: 8px;
+  color: white;
+}
+
+.marathon-menu h3,
+.marathon-menu h4 {
+  margin-bottom: 8px;
+}
+
+.marathon-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 10px 0;
+}
+
+.marathon-menu ul li {
+  margin-bottom: 6px;
+}
+
+.marathon-menu button {
+  background: #333;
+  color: white;
+  border: none;
+  padding: 6px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.marathon-menu button:hover {
+  background: #444;
+}
+
+.marathon-menu input {
+  padding: 5px;
+  border-radius: 5px;
+  border: none;
+  margin-right: 5px;
+}

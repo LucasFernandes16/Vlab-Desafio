@@ -1,4 +1,7 @@
 import { Injectable } from '@angular/core';
+import { Movie } from '../types/movie.type';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 export interface Marathon {
   id: number;
