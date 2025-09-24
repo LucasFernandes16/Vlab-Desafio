@@ -1,32 +1,33 @@
-// src/app/pages/my-marathons/my-marathons.component.ts
-import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule,AsyncPipe } from '@angular/common';
+// src/app/features/movies/pages/my-marathon/my-marathon.component.ts
+
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core'; // 1. Importe o ChangeDetectorRef
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MarathonService, Marathon } from '../../services/marathon.service';
 import { MovieFacade } from '../../services/movie.facade';
 import { MovieCardComponent } from '../../components/movie-card/movie-card.component';
-import { RouterModule } from '@angular/router'; //  
+import { RouterModule } from '@angular/router';
+import { Movie } from '../../types/movie.type';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-my-marathons',
   standalone: true,
   templateUrl: './my-marathon.component.html',
   styleUrls: ['./my-marathon.component.scss'],
-  imports: [
-    CommonModule,
-    AsyncPipe,
-    FormsModule,
-    MovieCardComponent,
-    RouterModule
-  ]
+  imports: [CommonModule, FormsModule, MovieCardComponent, RouterModule]
 })
 export class MyMarathonsComponent implements OnInit {
   private marathonService = inject(MarathonService);
   private facade = inject(MovieFacade);
+  private cdr = inject(ChangeDetectorRef); // 2. Injete o ChangeDetectorRef
 
   marathons: Marathon[] = [];
   newMarathonName = '';
+  
   selectedMarathonId: number | null = null;
+  selectedMarathonMovies: Movie[] = [];
+  isLoadingMovies = false;
 
   ngOnInit() {
     this.loadMarathons();
@@ -35,7 +36,6 @@ export class MyMarathonsComponent implements OnInit {
   loadMarathons() {
     this.marathons = this.marathonService.getMarathons();
   }
-
 
   createMarathon() {
     if (this.newMarathonName.trim()) {
@@ -50,19 +50,44 @@ export class MyMarathonsComponent implements OnInit {
     this.loadMarathons();
   }
 
-  getMovieDetails(movieId: number) {
-    return this.facade.api.getMovieDetails(movieId);
+  removeMovie(marathonId: number, movieId: number) {
+    this.marathonService.removeMovieFromMarathon(marathonId, movieId);{
+      this.selectedMarathonMovies = this.selectedMarathonMovies.filter(m => m.id !== movieId);
+    };
   }
 
-  getTotalDuration(marathonId: number): number {
-    return this.marathonService.getTotalDuration(marathonId);
-  }
-
-  toggleMarathonDetails(id: number) {
-    if (this.selectedMarathonId === id) {
-      this.selectedMarathonId = null; // Se já estiver selecionado, fecha a lista
-    } else {
-      this.selectedMarathonId = id; // Senão, abre a lista
+  toggleMarathonDetails(marathon: Marathon) {
+    if (this.selectedMarathonId === marathon.id) {
+      this.selectedMarathonId = null;
+      this.selectedMarathonMovies = [];
+      return;
     }
+
+    this.selectedMarathonId = marathon.id;
+    this.isLoadingMovies = true;
+    this.selectedMarathonMovies = [];
+
+    if (marathon.movies.length === 0) {
+      this.isLoadingMovies = false;
+      return;
+    }
+
+    const movieObservables = marathon.movies.map(movieRef =>
+      this.facade.api.getMovieDetails(movieRef.id)
+    );
+
+    forkJoin(movieObservables).subscribe({
+      next: (movies) => {
+        this.selectedMarathonMovies = movies;
+        this.isLoadingMovies = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Erro ao buscar os detalhes dos filmes.', err);
+        this.isLoadingMovies = false;
+      }
+    });
+
+
   }
 }

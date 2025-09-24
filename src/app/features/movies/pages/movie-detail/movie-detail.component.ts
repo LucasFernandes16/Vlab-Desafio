@@ -102,6 +102,7 @@ export class MovieDetailComponent implements OnInit {
     }
   }
 
+
   createMarathon() {
     if (this.newMarathonName.trim() && this.movie) {
       const marathon = this.marathonService.createMarathon(this.newMarathonName);

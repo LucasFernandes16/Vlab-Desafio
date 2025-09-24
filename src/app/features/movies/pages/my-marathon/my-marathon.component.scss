@@ -1,16 +1,19 @@
+// src/app/features/movies/pages/my-marathon/my-marathon.component.scss
+
 .container {
+  text-decoration: none;
   display: flex;
+  align-items: center;
   flex-direction: column;
-  gap: 20px; 
-  max-width: 1200px; 
-  margin: 0 auto; 
-  padding: 50px 24px; 
-  background: oklch(36.98% 0.014 302.71);
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 50px 24px;
+  background: oklch(21.384% 0.00196 286.056);
   color: white;
   min-height: 60vh;
   border-radius: 8px;
 }
-
 
 .create-marathon-section {
   display: flex;
@@ -18,66 +21,108 @@
   align-items: center;
 }
 
+.marathon-input {
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  font-size: 16px;
+}
 
-.action-btn, .delete-btn, .create-btn {
+.create-btn, .delete-btn, .action-btn{
   font-size: 14px;
   padding: 8px 12px;
   cursor: pointer;
   border-radius: 6px;
   border: none;
   color: white;
-  transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+  transition: background-color 0.2s ease, transform 0.1s ease;
 
   &:hover {
-    transform: scale(1.05); 
+    transform: scale(1.05);
   }
 }
 
+
+
 .create-btn {
-  background-color: #1db954; 
-  &:hover {
-    background-color: #159d42;
-  }
+  background-color: #d93f3f;
+  &:hover { background-color: #b82a2a; }
 }
 
 .delete-btn {
-  background-color: #d93f3f; 
-  &:hover {
-    background-color: #b82a2a;
-  }
+  background-color: #d93f3f;
+  &:hover { background-color: #b82a2a; }
 }
 
 .action-btn {
   background-color: #4b4b4b;
-  &:hover {
-    background-color: #5c5c5c;
-  }
+  &:hover { background-color: #5c5c5c; }
 }
 
 .marathon-card {
-  background-color: oklch(63.438% 0.23919 31.847 / 0.723);
+  background-color: oklch(63.438% 0.23919 31.847 / 0.549);
   display: flex;
   flex-direction: column;
   padding: 20px;
   gap: 15px;
   border-radius: 8px;
+  &:hover {
+    background-color: #831e1e;
+  }
 }
-
+.marathon-card,h3{
+  padding: 10px;
+}
 
 .marathon-header {
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
   align-items: center;
 }
 
 .marathon-actions {
   display: flex;
-  gap: 10px; 
+  gap: 10px;
+}
+
+// Garante que a grelha de filmes é exibida como um grid
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 2rem;
 }
 
 
-.movie-grid {
-  display: grid; 
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1rem;
+.no-marathons-message {
+  text-align: center;
+  padding: 40px;
+  font-style: italic;
+  color: #ccc;
+}
+
+.movie-link {
+  display: block; 
+  text-decoration: none; 
+  color: inherit; 
+  height: 100%; 
+}
+
+.movie-link:hover {
+  transform: scale(1.03);
+  transition: transform 0.2s ease-in-out;
+}
+
+.movie-card{
+  border:1px solid #ccc;
+}
+
+.remove-btn {
+  color: white;
+  background-color: #d93f3f;
+  border: 1px solid #b82a2a;
+  border-radius: 4px;
+
+  &hover {
+    background-color: #b82a2a;
+  }
 }

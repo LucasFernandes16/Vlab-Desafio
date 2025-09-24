@@ -9,19 +9,10 @@ import { RouterLink } from "@angular/router";
   styleUrls: ['./movie-card.component.scss'],
   standalone: true,
   imports: [CommonModule, RouterLink]
+  
 })
 export class MovieCardComponent {
   @Input() movie!: Movie;
-  @Input() id!: number;
-  @Input() title!: string;
-  @Input() imgSrc!: string;
-  @Input() overview!: string;
-  @Input() releaseDate!: string
-  @Input() voteAverage!: number;
-  @Input() genreIds!: number[];
-  @Input() popularity!: number
-  @Input() runtime!: number; // duração em minutos
-
 
   getPosterUrl(posterPath: string): string {
     return `https://image.tmdb.org/t/p/w500${posterPath}`;

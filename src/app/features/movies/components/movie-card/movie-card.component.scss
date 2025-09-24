@@ -1,12 +1,15 @@
 .movie-card {
   display: flex;
   flex-direction: column;
-  border: 1px solid #ccc;
+  border: 2px solid #242424;
   border-radius: 8px;
   overflow: hidden;
   transition: transform 0.2s;
   cursor: pointer;
-
+  background-color: #1c1c1c;
+  text-decoration: none; 
+  color: white;
+  
   &:hover {
     transform: scale(1.05);
   }
@@ -28,7 +31,7 @@
 
 .movie-overview {
   font-size: 0.9rem;
-  color: #666;
+  color: #ffffff;
   flex-grow: 1;
 }
 
@@ -37,5 +40,5 @@
   justify-content: space-between;
   margin-top: 1rem;
   font-size: 0.8rem;
-  color: #333;
+  color: #ffffff;
 }
