@@ -53,6 +53,7 @@ export class MarathonService {
     if (marathon && !marathon.movies.some(m => m.id === movieId)) {
       marathon.movies.push({ id: movieId, runtime });
       this.saveToStorage();
+      console.log(`Filme ${movieId} adicionado à maratona ${marathon.name}`); // Log adicionado
     }
   }
 

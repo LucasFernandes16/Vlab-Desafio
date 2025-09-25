@@ -1,0 +1,90 @@
+
+
+.theme-generator {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: oklch(21.384% 0.00196 286.056);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    text-align: center;
+
+    h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+        color: #ffffff;
+    }
+
+    input, select {
+        padding: 0.6rem 1rem;
+        margin: 0.5rem;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        outline: none;
+        transition: border-color 0.3s;
+
+        &:focus {
+        border-color: #007BFF;
+        }
+  }
+
+    button {
+        padding: 0.6rem 1.5rem;
+        margin: 0.5rem;
+        font-size: 1rem;
+        background-color: #d93f3f;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.3s;
+
+        &:hover {
+        background-color: #b82a2a;
+        }
+    }
+}
+
+.movie-item {
+    max-width: 200px;   
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* centraliza o botão */
+    gap: 0.5rem;         /* espaçamento entre card e botão */
+}
+
+.movie-item button {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: none;
+  background-color: #d93f3f;
+  color: white;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.movie-item button:hover {
+  background-color: #b82a2a;
+}
+
+
+p {
+  text-align: center;
+  color: #666;
+  margin-top: 2rem;
+  font-size: 1rem;
+}
+
+.movies-list{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); // ajuste o 200px se quiser cards maiores/menores
+    gap: 1.5rem;
+    margin-top: 2rem;
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 12px;
+
+
+}

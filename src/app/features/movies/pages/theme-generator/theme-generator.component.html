@@ -1,0 +1,23 @@
+
+<div class = "container">
+  <div class="theme-generator">
+    <h2>🎬 Gerador por {{ role }}</h2>
+
+    <input [(ngModel)]="personName" placeholder="Digite o nome" />
+    <select [(ngModel)]="role">
+      <option value="Actor">Ator</option>
+      <option value="Director">Diretor</option>
+      <option value="Writer">Roteirista</option>
+    </select>
+    <button (click)="generate()">Gerar</button>
+  </div>
+
+  <div class = "movies-list">
+    <div *ngFor="let movie of thematicMovies" class="movie-item">
+      <app-movie-card [movie]="movie"></app-movie-card>
+    </div>
+    <div *ngIf="thematicMovies.length === 0"class="no-item">
+        <p>Nenhum filme gerado ainda. Use o gerador acima!</p>
+    </div>
+  </div> 
+</div>   

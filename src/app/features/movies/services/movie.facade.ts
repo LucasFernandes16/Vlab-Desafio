@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { MovieApiService } from '../api/movie.api';
 import { MovieStateService } from '../state/movie.state';
-import { map, tap, catchError } from 'rxjs/operators';
+import { map, tap, catchError,switchMap } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 import { Movie } from '../types/movie.type';
 
@@ -49,5 +49,47 @@ export class MovieFacade {
    getMovieDetails(movieId: number): Observable<Movie> {
     return this.api.getMovieDetails(movieId);
   }
+
+    searchDirectorMovies(name: string): Observable<any[]> {
+    return this.api.searchPerson(name).pipe(
+      switchMap((res: any) => {
+        if (res.results.length > 0) {
+          const personId = res.results[0].id;
+          return this.api.getPersonMovies(personId).pipe(
+            map((credits: any) => credits.crew.filter((c: any) => c.job === "Director"))
+          );
+        }
+        return of([]);
+      })
+    );
+  }
+
+  searchMoviesByPerson(name: string, job: 'Actor' | 'Director' | 'Writer' = 'Actor') {
+  return this.api.searchPerson(name).pipe(
+    switchMap((res: any) => {
+      if (res.results.length === 0) return of([]);
+      const personId = res.results[0].id;
+      return this.api.getPersonMovies(personId).pipe(
+        map((credits: any) => {
+          switch (job) {
+            case 'Actor':
+              return credits.cast || [];
+            case 'Director':
+              return (credits.crew || []).filter((c: any) => c.job === 'Director' || c.department === 'Directing');
+            case 'Writer':
+              return (credits.crew || []).filter((c: any) => c.job === 'Writer' || c.department === 'Writing');
+          }
+        })
+      );
+    })
+  );
+}
+
+searchPerson(name: string): Observable<any[]> {
+  return this.api.searchPerson(name).pipe(
+    map((res: any) => res.results || [])
+  );
+}
+
 
 }
