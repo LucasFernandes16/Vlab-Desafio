@@ -38,29 +38,27 @@ export class ThemeGeneratorComponent {
   }
 
   generate() {
-  this.loading = true;
-  this.error = null;
+    this.loading = true;
+    this.error = null;
 
-  if (!this.personName.trim()) {
-    this.error = 'Digite um nome';
-    this.loading = false;
-    return;
+    if (!this.personName.trim()) {
+      this.error = 'Digite um nome';
+      this.loading = false;
+      return;
+    }
+
+    this.movieFacade.searchMoviesByPerson(this.personName, this.role)
+      .subscribe({
+        next: movies => {
+          this.thematicMovies = movies;
+          this.loading = false;
+        },
+        error: () => {
+          this.error = 'Erro ao buscar filmes';
+          this.loading = false;
+        }
+      });
   }
-
-  this.movieFacade.searchMoviesByPerson(this.personName, this.role)
-    .subscribe({
-      next: (movies) => {
-        console.log(`Filmes encontrados para ${this.personName}:`, movies);
-        this.thematicMovies = movies;
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error(err);
-        this.error = 'Erro ao buscar filmes';
-        this.loading = false;
-      }
-    });
-}
 
 
   loadMarathons() {

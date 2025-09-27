@@ -50,11 +50,10 @@ export class MarathonService {
 
   addMovieToMarathon(marathonId: number, movieId: number, runtime: number) {
     const marathon = this.marathons.find(m => m.id === marathonId);
-    if (marathon && !marathon.movies.some(m => m.id === movieId)) {
-      marathon.movies.push({ id: movieId, runtime });
-      this.saveToStorage();
-      console.log(`Filme ${movieId} adicionado à maratona ${marathon.name}`); // Log adicionado
-    }
+    if (!marathon) return;
+    if (marathon.movies.some(m => m.id === movieId)) return;
+    marathon.movies.push({ id: movieId, runtime });
+    this.saveToStorage();
   }
 
   removeMovieFromMarathon(marathonId: number, movieId: number) {

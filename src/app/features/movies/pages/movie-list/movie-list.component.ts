@@ -36,92 +36,63 @@ export class MovieListComponent implements OnInit {
 
   genres: Genre[] = [];
   selectedGenre: number | null = null;
-  selectedYear: string = '';
-  selectedOrder: string = 'release_date';
+  selectedYear = '';
+  selectedOrder: 'release_date' | 'vote' | 'title' | 'popularity' = 'release_date';
 
-  years: number[] = Array.from({ length: 2025 - 1960 + 1 }, (_, i) => 1960 + i); // datas validas em ano Lancamento
+  years = Array.from({ length: 2025 - 1960 + 1 }, (_, i) => 1960 + i);
 
   ngOnInit() {
-    this.facade.api.getGenres().subscribe((genres: Genre[]) => {
-      this.genres = genres;
-    });
+    this.facade.api.getGenres().subscribe(genres => (this.genres = genres));
     this.loadMovieCategories();
-
     this.searchControl.valueChanges.pipe(
       startWith(''),
       debounceTime(300),
       distinctUntilChanged()
-    ).subscribe(query => {
-      if (query) {
-        this.facade.searchMovies(query);
-      } else {
-        this.facade.loadPopularMovies();
-      }
-    });
+    ).subscribe(query => this.facade.searchMovies(query || ''));
+  }
+
+  private mapMovies(raw: any[]): CarouselItem[] {
+    return raw.map(m => ({
+      id: m.id,
+      title: m.title,
+      imgSrc: m.poster_path,
+      link: `/movies/${m.id}`,
+      rating: (m.vote_average / 10) * 100,
+      vote: m.vote_average,
+      genre_ids: m.genre_ids,
+      release_date: m.release_date,
+      popularity: m.popularity
+    }));
   }
 
   private loadMovieCategories() {
     this.facade.loadPopularMovies();
-
     this.facade.movies$.subscribe(state => {
       this.loading = state.loading;
       this.error = state.error;
-      if (state.movies.length > 0) {
-        const movies = state.movies.map(movie => ({
-          id: movie.id,
-          title: movie.title,
-          imgSrc: movie.poster_path,
-          link: `/movies/${movie.id}`,
-          rating: (movie.vote_average / 10) * 100,
-          vote: movie.vote_average,
-          genre_names: movie.genre_ids.map(id => this.genres.find(g => g.id === id)?.name).filter(Boolean),
-          genre_ids: movie.genre_ids, 
-          release_date: movie.release_date, 
-          popularity: movie.popularity 
-        }));
-
-        this.popularMovies = movies;
-        this.topRatedMovies = movies.slice(0, 10);
-        this.upcomingMovies = movies.slice(10, 20);
-        this.nowPlayingMovies = movies.slice(20, 30);
-      }
+      if (!state.movies.length) return;
+      const movies = this.mapMovies(state.movies);
+      this.popularMovies = movies;
+      this.topRatedMovies = [...movies].sort((a, b) => (b.vote ?? 0) - (a.vote ?? 0)).slice(0, 15);
+      this.upcomingMovies = movies.slice(10, 30);
+      this.nowPlayingMovies = movies.slice(30, 50);
     });
   }
 
-  // Função para filtrar e ordenar
   get filteredAndSortedMovies(): CarouselItem[] {
-    let movies = this.popularMovies;
-
-    // Filtro por gênero
+    let list = [...this.popularMovies];
     if (typeof this.selectedGenre === 'number') {
-      movies = movies.filter(m =>
-        m.genre_ids?.includes(this.selectedGenre as number)
-      );
+      list = list.filter(m => m.genre_ids?.includes(this.selectedGenre as number));
     }
-
-    // Filtro por ano
     if (this.selectedYear) {
-      movies = movies.filter(m =>
-        m.release_date?.startsWith(this.selectedYear)
-      );
+      list = list.filter(m => (m.release_date ?? '').startsWith(this.selectedYear));
     }
-
-    // Ordenação
-    switch (this.selectedOrder) {
-      case 'release_date':
-        movies = movies.sort((a, b) => (b.release_date ?? '').localeCompare(a.release_date ?? ''));
-        break;
-      case 'vote':
-        movies = movies.sort((a, b) => (b.vote ?? 0) - (a.vote ?? 0));
-        break;
-      case 'title':
-        movies = movies.sort((a, b) => (a.title ?? '').localeCompare(b.title ?? ''));
-        break;
-      case 'popularity':
-        movies = movies.sort((a, b) => (b.popularity ?? 0) - (a.popularity ?? 0));
-        break;
-    }
-
-    return movies;
+    const sorters: Record<string, (a: CarouselItem, b: CarouselItem) => number> = {
+      release_date: (a, b) => (b.release_date ?? '').localeCompare(a.release_date ?? ''),
+      vote: (a, b) => (b.vote ?? 0) - (a.vote ?? 0),
+      title: (a, b) => (a.title ?? '').localeCompare(b.title ?? ''),
+      popularity: (a, b) => (b.popularity ?? 0) - (a.popularity ?? 0)
+    };
+    return list.sort(sorters[this.selectedOrder]);
   }
 }
